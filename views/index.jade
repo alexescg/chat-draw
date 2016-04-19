@@ -1,0 +1,33 @@
+doctype html
+html(ng-app="app")
+    head
+        title= title
+        link(rel="stylesheet", href="public/css/bootstrap.min.css")
+
+    body(ng-controller="chatController")
+
+        h1  El mejor chat del mundo
+        div.col-md-12.well(ng-show="mensajes.length > 0")
+            div.form-group(ng-repeat="mensaje in mensajes")
+                    p
+                        strong {{mensaje.nombrePersona}} dice:
+                    | {{mensaje.texto}}
+        div.container
+            form.form-horizontal(method="POST" action="mensaje/create")
+
+                div.col-md-8.form-group
+                    label(for="nombrePersona") Nombre
+                    input#nombrePersona.form-control(type="text" ng-model="mensaje.nombrePersona" name="nombrePersona" ng-required="true")
+                div.col-md-8.form-group
+                    label(for="texto") Mensaje
+                    input#texto.form-control(type="text" ng-model="mensaje.texto" name="texto" ng-required="true")
+                div.col-md-12
+                    button.btn.btn-default(type="submit") Enviar
+                    input.btn.btn-info(type="button" ng-click="refrescar()" value="Recargar")
+
+        script(type="text/javascript" src="public/js/angular.min.js")
+        script(type="text/javascript" src="public/js/app.js")
+        script(type="text/javascript", src="public/js/jquery-1.12.3.min.js")
+        script(type="text/javascript", src="public/js/bootstrap.min.js")
+
+
