@@ -3,4 +3,4 @@ chat-draw es una aplicación que utiliza Node.js, Socket.io, Mongoose y Angular.
 * Totalmente anónimo 
 * No requiere de autenticación. 
 
-###Hecho por Alejandro Escobedo, Daniela Santillanes y Erik Zubia,
+###Hecho por Alejandro Escobedo, Daniela Santillanes y Erik Zubia.
