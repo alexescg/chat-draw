@@ -16,6 +16,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
+var server = require('http').Server(app);
+var io = require("socket.io")(server);
+
 mongoose.connect('mongodb://localhost/chat');
 var Schema = mongoose.Schema;
 
@@ -28,10 +31,6 @@ var Mensaje = mongoose.model("Mensaje", mensajeSchema);
 
 app.get('/', function (req, res) {
     res.render('index');
-});
-
-app.listen(port, function () {
-    console.log("Escuchando en:" + port);
 });
 
 app.get('/mensajes/all', function (req, res) {
@@ -52,6 +51,38 @@ app.post('/mensaje/create', function (req, res) {
     mensaje.save(function (err, obj) {
         console.log("Guardado exitosamente");
     });
-
 });
 
+
+var getMessages = Mensaje.find({}).then(function successCallback(success) {
+    console.log(success);
+    return success;
+}, function errorCallback(error) {
+    throw error;
+});
+
+io.on('connect', function (socket) {
+
+    // console.log(getMessages());
+    socket.emit('sendMessages', getMessages);
+
+    socket.on('newMessage', function (data) {
+        var mensajeNuevo = new Mensaje(data);
+        mensajeNuevo.save(function (err, obj) {
+            if (obj) {
+                console.log("Guardado exitosamente");
+                io.sockets.emit('sendMessages', function () {
+                    Mensaje.find({}).then(function successCallback(success) {
+                        return success;
+                    }, function errorCallback(error) {
+                        throw error;
+                    });
+                });
+            }
+        });
+    });
+});
+
+server.listen(port, function () {
+    console.log("Escuchando en: " + port);
+});
