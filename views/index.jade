@@ -21,7 +21,7 @@ html(ng-app="app")
                         label(for="texto") Mensaje
                         input#texto.form-control(type="text" ng-model="mensaje.texto" name="texto" ng-required="true")
                     div.col-md-12
-                        button.btn.btn-default(type="button" ng-click="enviarMensajeNuevo()") Enviar
+                        button.btn.btn-default(type="button" ng-disabled="!(mensaje.texto && mensaje.nombrePersona)" ng-click="enviarMensajeNuevo()") Enviar
 
         script(type="text/javascript" src="public/js/angular.min.js")
         script(type="text/javascript" src="public/js/app.js")
