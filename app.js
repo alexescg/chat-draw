@@ -55,7 +55,6 @@ app.post('/mensaje/create', function (req, res) {
 
 
 var getMessages = Mensaje.find({}).then(function successCallback(success) {
-    console.log(success);
     return success;
 }, function errorCallback(error) {
     throw error;
@@ -70,7 +69,6 @@ io.on('connect', function (socket) {
         var mensajeNuevo = new Mensaje(data);
         mensajeNuevo.save(function (err, obj) {
             if (obj) {
-                console.log("Guardado exitosamente");
                 io.sockets.emit('sendMessages', function () {
                     Mensaje.find({}).then(function successCallback(success) {
                         return success;
