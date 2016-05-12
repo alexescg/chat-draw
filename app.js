@@ -19,7 +19,8 @@ app.use(cookieParser());
 var server = require('http').Server(app);
 var io = require("socket.io")(server);
 
-mongoose.connect('mongodb://localhost/chat');
+//mongoose.connect('mongodb://localhost/chat');
+mongoose.connect('mongodb://usr_chat:1234@ds021172.mlab.com:21172/chat')
 var Schema = mongoose.Schema;
 
 var mensajeSchema = new Schema({
@@ -69,13 +70,7 @@ io.on('connect', function (socket) {
         var mensajeNuevo = new Mensaje(data);
         mensajeNuevo.save(function (err, obj) {
             if (obj) {
-                io.sockets.emit('sendMessages', function () {
-                    Mensaje.find({}).then(function successCallback(success) {
-                        return success;
-                    }, function errorCallback(error) {
-                        throw error;
-                    });
-                });
+                io.sokets.emit('sendMessage',obj);
             }
         });
     });
