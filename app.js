@@ -70,7 +70,7 @@ io.on('connect', function (socket) {
         var mensajeNuevo = new Mensaje(data);
         mensajeNuevo.save(function (err, obj) {
             if (obj) {
-                io.sokets.emit('sendMessage',obj);
+                io.emit('sendMessage',obj);
             }
         });
     });
